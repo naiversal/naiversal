@@ -38,15 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
-                <div class="error">Username atau password salah.</div>
+                <div class="dashboard-message message-error">Username atau password salah.</div>
             <?php endif; ?>
 
             <?php if (isset($_GET['error']) && $_GET['error'] == 2): ?>
-                <div class="error">Silakan login terlebih dahulu untuk mengakses Dashboard.</div>
+                <div class="dashboard-message message-error">Silakan login terlebih dahulu untuk mengakses Dashboard.</div>
             <?php endif; ?>
 
             <?php if (isset($_GET['message']) && $_GET['message'] == 'logout'): ?>
-                <div class="success">Anda berhasil logout.</div>
+                <div class="dashboard-message message-success">Anda berhasil logout.</div>
             <?php endif; ?>
 
             <div class="back-link">

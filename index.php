@@ -11,17 +11,23 @@ session_start();
 </head>
 <body>
     <header>
-        <h1>Planet-Planet dalam Tata Surya</h1>
-        <nav>
-            <ul>
-                <li><a href="index.php">Beranda</a></li>
-                <li><a href="planet.php">Planet</a></li>
-                <li><a href="tata-surya.php">Tata Surya</a></li>
-                <li><a href="tentang.php">Tentang</a></li>
-                <li><a href="login.php">Login</a></li>
-            </ul>
-        </nav>
-        <button id="toggle-dark">🌙 Dark Mode</button>
+        <h1>
+            <span class="typing-container">SISTEM TATA SURYA</span>
+        </h1>
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="index.php" class="active">Beranda</a></li>
+                    <li><a href="planet.php">Planet</a></li>
+                    <li><a href="tata-surya.php">Tata Surya</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="login.php">Login</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="toggle-dark">🌙 Dark Mode</button>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -36,12 +42,12 @@ session_start();
             <h2>Eksplorasi</h2>
             <div class="planet-grid">
                 <article class="card">
-                    <h3 class="card-title"><a href="planet.php">PLANET-PLANET</a></h3>
+                    <h3 class="card-title">PLANET-PLANET</h3>
                     <p class="card-text">Pelajari tentang 8 planet dalam tata surya, dari Merkurius hingga Neptunus.</p>
                 </article>
 
                 <article class="card">
-                    <h3 class="card-title"><a href="tata-surya.php">SISTEM TATA SURYA</a></h3>
+                    <h3 class="card-title">SISTEM TATA SURYA</h3>
                     <p class="card-text">Temukan fakta menarik tentang matahari, bulan, asteroid, dan benda langit lainnya.</p>
                 </article>
             </div>

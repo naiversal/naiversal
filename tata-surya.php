@@ -4,6 +4,35 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php?error=2");
     exit();
 }
+
+include 'koneksi.php';
+
+$bendalangit_result = mysqli_query($conn, "SELECT * FROM bendalangit ORDER BY 
+    CASE jenis_objek 
+        WHEN 'Pusat Tata Surya' THEN 1
+        WHEN 'Bulan' THEN 2
+        WHEN 'Satelit' THEN 3
+        WHEN 'Planet Kerdil' THEN 4
+        WHEN 'Benda Langit Lainnya' THEN 5
+        ELSE 6
+    END, nama_objek");
+
+$bendalangit = [];
+while ($benda = mysqli_fetch_assoc($bendalangit_result)) {
+    $bendalangit[] = $benda;
+}
+
+function filterByJenis($bendalangit, $jenis) {
+    return array_filter($bendalangit, function($benda) use ($jenis) {
+        return $benda['jenis_objek'] === $jenis;
+    });
+}
+
+$pusat_tata_surya = filterByJenis($bendalangit, 'Pusat Tata Surya');
+$bulan = filterByJenis($bendalangit, 'Bulan');
+$satelit = filterByJenis($bendalangit, 'Satelit');
+$planet_kerdil = filterByJenis($bendalangit, 'Planet Kerdil');
+$benda_lainnya = filterByJenis($bendalangit, 'Benda Langit Lainnya');
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -15,74 +44,118 @@ if (!isset($_SESSION['username'])) {
 </head>
 <body>
     <header>
-        <h1>Sistem Tata Surya</h1>
-        <nav>
-            <ul>
-                <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="planet.php">Planet</a></li>
-                <li><a href="tata-surya.php">Tata Surya</a></li>
-                <li><a href="tentang.php">Tentang</a></li>
-                <li><a href="logout.php">Logout</a></li>
-            </ul>
-        </nav>
-        <button id="toggle-dark">🌙 Dark Mode</button>
+        <h1>BENDA LANGIT</h1>
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="dashboard.php">Dashboard</a></li>
+                    <li><a href="planet.php">Planet</a></li>
+                    <li><a href="tata-surya.php" class="active">Tata Surya</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="toggle-dark">🌙 Dark Mode</button>
+            </div>
+        </div>
     </header>
 
     <main>
+        <?php if (!empty($pusat_tata_surya)): ?>
         <section>
             <h2>Pusat Tata Surya</h2>
             <div class="planet-grid">
+                <?php foreach ($pusat_tata_surya as $benda): ?>
                 <article class="card">
-                    <h3 class="card-title">MATAHARI</h3>
-                    <p class="card-text">Bintang di pusat tata surya yang menyediakan energi dan cahaya untuk semua planet. Terdiri dari 73% hidrogen dan 25% helium dengan suhu inti mencapai 15 juta derajat Celsius.</p>
+                    <?php if ($benda['gambar']): ?>
+                        <img src="img/<?= $benda['gambar'] ?>" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php else: ?>
+                        <img src="img/matahari.png" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php endif; ?>
+                    <h3 class="card-title"><?= $benda['nama_objek'] ?></h3>
+                    <p class="card-text"><?= $benda['deskripsi'] ?></p>
                 </article>
+                <?php endforeach; ?>
             </div>
         </section>
+        <?php endif; ?>
 
+        <?php if (!empty($bulan)): ?>
         <section>
-            <h2>Satelit dan Bulan</h2>
+            <h2>Bulan</h2>
             <div class="planet-grid">
+                <?php foreach ($bulan as $benda): ?>
                 <article class="card">
-                    <h3 class="card-title">BULAN (SATELIT BUMI)</h3>
-                    <p class="card-text">Satelit alami Bumi yang mempengaruhi pasang surut laut. Terbentuk sekitar 4.5 miliar tahun yang lalu dan memiliki diameter seperempat dari Bumi.</p>
+                    <?php if ($benda['gambar']): ?>
+                        <img src="img/<?= $benda['gambar'] ?>" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php else: ?>
+                        <img src="img/bulan.png" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php endif; ?>
+                    <h3 class="card-title"><?= $benda['nama_objek'] ?></h3>
+                    <p class="card-text"><?= $benda['deskripsi'] ?></p>
                 </article>
-
-                <article class="card">
-                    <h3 class="card-title">SATELIT GALILEAN JUPITER</h3>
-                    <p class="card-text">Empat satelit terbesar Jupiter: Io (vulkanik aktif), Europa (lautan di bawah es), Ganymede (terbesar di tata surya), dan Callisto (penuh kawah).</p>
-                </article>
-
-                <article class="card">
-                    <h3 class="card-title">TITAN (SATELIT SATURNUS)</h3>
-                    <p class="card-text">Satelit terbesar Saturnus dengan atmosfer tebal dan danau metana cair di permukaannya.</p>
-                </article>
+                <?php endforeach; ?>
             </div>
         </section>
+        <?php endif; ?>
 
+        <?php if (!empty($satelit)): ?>
+        <section>
+            <h2>Satelit</h2>
+            <div class="planet-grid">
+                <?php foreach ($satelit as $benda): ?>
+                <article class="card">
+                    <?php if ($benda['gambar']): ?>
+                        <img src="img/<?= $benda['gambar'] ?>" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php else: ?>
+                        <div class="fallback-img">No Image</div>
+                    <?php endif; ?>
+                    <h3 class="card-title"><?= $benda['nama_objek'] ?></h3>
+                    <p class="card-text"><?= $benda['deskripsi'] ?></p>
+                </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if (!empty($planet_kerdil)): ?>
+        <section>
+            <h2>Planet Kerdil</h2>
+            <div class="planet-grid">
+                <?php foreach ($planet_kerdil as $benda): ?>
+                <article class="card">
+                    <?php if ($benda['gambar']): ?>
+                        <img src="img/<?= $benda['gambar'] ?>" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php else: ?>
+                        <img src="img/pluto.png" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php endif; ?>
+                    <h3 class="card-title"><?= $benda['nama_objek'] ?></h3>
+                    <p class="card-text"><?= $benda['deskripsi'] ?></p>
+                </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if (!empty($benda_lainnya)): ?>
         <section>
             <h2>Benda Langit Lainnya</h2>
             <div class="planet-grid">
+                <?php foreach ($benda_lainnya as $benda): ?>
                 <article class="card">
-                    <h3 class="card-title">SABUK ASTEROID</h3>
-                    <p class="card-text">Wilayah antara Mars dan Jupiter yang berisi ribuan asteroid. Asteroid terbesar adalah Ceres yang juga diklasifikasikan sebagai planet kerdil.</p>
+                    <?php if ($benda['gambar']): ?>
+                        <img src="img/<?= $benda['gambar'] ?>" alt="<?= $benda['nama_objek'] ?>" class="card-img">
+                    <?php else: ?>
+                        <div class="fallback-img">No Image</div>
+                    <?php endif; ?>
+                    <h3 class="card-title"><?= $benda['nama_objek'] ?></h3>
+                    <p class="card-text"><?= $benda['deskripsi'] ?></p>
                 </article>
-
-                <article class="card">
-                    <h3 class="card-title">KOMET</h3>
-                    <p class="card-text">Benda es dan debu yang berasal dari pinggiran tata surya. Ketika mendekati matahari, es mencair dan membentuk ekor yang indah.</p>
-                </article>
-
-                <article class="card">
-                    <h3 class="card-title">SABUK KUIPER</h3>
-                    <p class="card-text">Wilayah di luar Neptunus yang berisi benda-benda es termasuk Pluto, Eris, dan Makemake. Sumber komet berperiode pendek.</p>
-                </article>
-
-                <article class="card">
-                    <h3 class="card-title">PLANET KERDIL</h3>
-                    <p class="card-text">Benda langit yang mengorbit matahari tapi tidak dominan di orbitnya. Contoh: Pluto, Ceres, Eris, Haumea, dan Makemake.</p>
-                </article>
+                <?php endforeach; ?>
             </div>
         </section>
+        <?php endif; ?>
     </main>
 
     <footer>
@@ -92,3 +165,4 @@ if (!isset($_SESSION['username'])) {
 <script src="script.js"></script>
 </body>
 </html>
+<?php mysqli_close($conn); ?>

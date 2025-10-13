@@ -14,17 +14,21 @@ if (!isset($_SESSION['username'])) {
 </head>
 <body>
 <header>
-    <h1>Tentang</h1>
-    <nav>
-        <ul>
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="planet.php">Planet</a></li>
-            <li><a href="tata-surya.php">Tata Surya</a></li>
-            <li><a href="tentang.php">Tentang</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        </ul>
-    </nav>
-    <button id="toggle-dark">🌙 Dark Mode</button>
+    <h1>TENTANG</h1>
+    <div class="nav-container">
+        <nav>
+            <ul>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="planet.php">Planet</a></li>
+                <li><a href="tata-surya.php">Tata Surya</a></li>
+                <li><a href="tentang.php" class="active">Tentang</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button id="toggle-dark">🌙 Dark Mode</button>
+        </div>
+    </div>
 </header>
 
 <main>
